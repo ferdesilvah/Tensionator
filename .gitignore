@@ -1,0 +1,19 @@
+# Python
+__pycache__/
+*.pyc
+
+# Test data recorded by the dashboard
+dashboard/data/
+data/
+
+# Arduino build output
+build/
+*.bin
+*.hex
+*.elf
+
+# Editors / OS
+.vscode/
+.idea/
+Thumbs.db
+.DS_Store
