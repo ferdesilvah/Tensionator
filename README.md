@@ -82,6 +82,16 @@ With the **rope off the drum** (or slack with its end free):
    must read **positive** in tension; a negative internal scale is fine.
    Tare and calibration are stored on the board and are **never** redone automatically at boot.
    Re-tare with the rope slack before each test day.
+4. **Multi-point calibration with weight plates (recommended over step 3):** close the dashboard, then
+   ```
+   python tools/calibrate_plates.py --plates 5.02,5.01,10.03,20.1 --hanger-kg 1.234
+   ```
+   Pass the **weighed** masses in the order you will hang them. The script tares, prompts you to
+   hang the plates one at a time and then take them off again, fits the scale to every point,
+   and (after you confirm) stores it on the board. It reports non-linearity, hysteresis, zero
+   return and noise. To verify the stored calibration without changing anything, add `--check`.
+   Results go to `dashboard/data/calibration/`, and each run adds a line to `cal_history.csv`.
+   `--sim` runs it without hardware.
 
 ### 3.3 Geometry and tuning
 1. **Effective radius:** line travel per step depends on the rope **centreline** radius,
@@ -242,7 +252,9 @@ dashboard/rig_dashboard.py    PC dashboard: live plots, commands, CSV logging, a
 dashboard/rig_protocol.py     line protocol (checksums, parsing)
 dashboard/rig_sim.py          simulated rig for testing the dashboard without hardware
 tools/upload.py               compile + upload helper that handles the R4 bootloader
+tools/calibrate_plates.py     multi-point load-cell calibration / check with weight plates
 tests/test_dashboard.py       headless tests: protocol, plot decimation, reconnect + logging (simulator)
+tests/test_calibrate.py       calibration fit + simulated calibration run
 ```
 
 Run the tests with `python tests/test_dashboard.py`. They take about 10 s and need no hardware.
